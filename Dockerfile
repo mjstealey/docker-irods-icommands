@@ -1,6 +1,10 @@
 FROM debian:jessie
 MAINTAINER Michael J. Stealey <stealey@renci.org>
 
+# explicitly set user/group IDs for docker worker
+RUN groupadd -r worker --gid=999 \
+    && useradd -m -g worker --uid=999 worker
+
 # Install gosu
 ENV GOSU_VERSION 1.9
 RUN set -x \
@@ -26,7 +30,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl libfuse2 &
     && apt-get purge -y --auto-remove curl
 
 COPY docker-entrypoint.sh /
-RUN mkdir /workspace
+RUN mkdir /workspace \
+    && chown worker:worker -R /workspace
 WORKDIR /workspace
 
 # Cleanup
