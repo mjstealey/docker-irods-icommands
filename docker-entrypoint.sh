@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # if WORKER_UID and WORKER_GID are not set, then run as root user
 if [[ -z "$WORKER_UID" ]] && [[ -z "$WORKER_GID" ]]; then
