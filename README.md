@@ -11,17 +11,22 @@ docker pull mjstealey/docker-irods-icommands
 ### Usage:
 Use an environment file to pass the required environment variables for an iinit call
 ```bash
-docker run --rm --env-file irods-iinit.env mjstealey/docker-irods-icommands ICOMMAND_TO_PERFORM
+docker run --rm --env-file sample-env-file.env mjstealey/docker-irods-icommands ICOMMAND_TO_PERFORM
 ```
-- Sample environment file `irods-iinit.env` (Update as required by your iRODS installation)
+- Sample environment file `sample-env-file.env` (Update as required for your iRODS installation)
 
   ```bash
   IRODS_HOST=localhost
   IRODS_PORT=1247
-  IRODS_USER_NAME=irods
+  IRODS_USER_NAME=rods
   IRODS_ZONE_NAME=tempZone
-  IRODS_PASSWORD=irods
+  IRODS_PASSWORD=rods
+  IRODS_DEFAULT_RESOURCE=demoResc
+  WORKER_UID=
+  WORKER_GID=
   ```
+**About UID/GID:** The docker container will operate as the **root** user if the `WORKER_UID` and `WORKER_GID` variables are left blank. If these variables are defined, the container will operate a **worker** user with the specified UID and GID. If only one varialbe is set the container will operate as a **worker** user and default the unset UID or GID to a value of 999. This is useful when operating on a system where read/write permissions of a shared volume on the host need to be respected.
+
 
 Pass environment variables indivdually
 ```
@@ -30,23 +35,27 @@ docker run --rm  -e IRODS_HOST=localhost \
   -e IRODS_USER_NAME=irods \
   -e IRODS_ZONE_NAME=tempZone
   -e IRODS_PASSWORD=irods \
+  -e WORKER_UID=1000 \
+  -e WORKER_GID=1000 \
   mjstealey/docker-irods-icommands ICOMMAND_TO_PERFORM
 ```
 
-Include a mounted volume for iput or iget calls
+Include a mounted volume for iput or iget calls. Say you have files to iput at `/LOCALPATH`, you would bind this volume to the containers `/workspace` as follows:
 ```bash
-docker run --rm -v /PATH/ON/HOST:/workspace \
+docker run --rm -v /LOCALPATH:/workspace \
   -e IRODS_HOST=localhost \
   -e IRODS_PORT=1247 \
   -e IRODS_USER_NAME=irods \
   -e IRODS_ZONE_NAME=tempZone
   -e IRODS_PASSWORD=irods \
+  -e WORKER_UID=1000 \
+  -e WORKER_GID=1000 \
   mjstealey/docker-irods-icommands {iput|iget} {file/directory|resource/collection}
 ```
 
-Default call generates an `ihelp` call
-```bash
-docker run --rm --env-file irods-iinit.env mjstealey/docker-irods-icommands
+An empty call generates the `ihelp` message
+```
+$ docker run --rm --env-file sample-env-file.env mjstealey/docker-irods-icommands
 The iCommands and a brief description of each:
 
 iadmin       - perform iRODS administrator operations (iRODS admins only).
