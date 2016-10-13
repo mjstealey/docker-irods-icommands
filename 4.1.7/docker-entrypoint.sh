@@ -13,6 +13,7 @@ elif [[ ! -z "$WORKER_UID" ]] || [[ ! -z "$WORKER_GID" ]]; then
     if [[ ! -z "$WORKER_GID" ]]; then
         gosu root groupmod -g ${WORKER_GID} worker
     fi
+    gosu root chown -R $(id -u irods):$(id -g irods) /var/lib/irods
     gosu worker iinit ${IRODS_PASSWORD}
     gosu worker "$@"
 fi

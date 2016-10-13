@@ -29,13 +29,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl libfuse2 &
     && rm irods-icommands.deb \
     && apt-get purge -y --auto-remove curl
 
-COPY docker-entrypoint.sh /
 RUN mkdir /workspace \
     && chown worker:worker -R /workspace
 WORKDIR /workspace
 
 # Cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Shenanigans to make dockerhub happy
+COPY . /tmp
+RUN cp /tmp/docker-entrypoint.sh /docker-entrypoint.sh \
+    && rm -rf /tmp/*
 
 VOLUME /workspace
 ENTRYPOINT ["/docker-entrypoint.sh"]
