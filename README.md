@@ -1,16 +1,17 @@
 # docker-irods-icommands
-Docker implementation of iRODS v4.1.9 iCommands
+Docker implementation of iRODS v.4.1.x iCommands
 
 ## Supported tags and respective Dockerfile links
 
-- 4.1.9, latest ([4.1.9/Dockerfile](https://github.com/mjstealey/docker-irods-icommands/blob/master/4.1.9/Dockerfile))
+- 4.1.10, latest ([4.1.10/Dockerfile](https://github.com/mjstealey/docker-irods-icommands/blob/master/4.1.10/Dockerfile))
+- 4.1.9 ([4.1.9/Dockerfile](https://github.com/mjstealey/docker-irods-icommands/blob/master/4.1.9/Dockerfile))
 - 4.1.8 ([4.1.8/Dockerfile](https://github.com/mjstealey/docker-irods-icommands/blob/master/4.1.8/Dockerfile))
 - 4.1.7 ([4.1.7/Dockerfile](https://github.com/mjstealey/docker-irods-icommands/blob/master/4.1.7/Dockerfile))
 
 ### Pull image from dockerhub
 
 ```bash
-docker pull mjstealey/docker-irods-icommands:4.1.9
+docker pull mjstealey/docker-irods-icommands:latest
 ```
 
 ### Usage:
@@ -42,7 +43,7 @@ docker run --rm  -e IRODS_HOST=localhost \
   -e IRODS_PASSWORD=irods \
   -e WORKER_UID=1000 \
   -e WORKER_GID=1000 \
-  mjstealey/docker-irods-icommands:4.1.9 ICOMMAND_TO_PERFORM
+  mjstealey/docker-irods-icommands:latest ICOMMAND_TO_PERFORM
 ```
 
 Include a mounted volume for iput or iget calls. Say you have files to iput at `/LOCALPATH`, you would bind this volume to the containers `/workspace` as follows:
@@ -55,12 +56,12 @@ docker run --rm -v /LOCALPATH:/workspace \
   -e IRODS_PASSWORD=irods \
   -e WORKER_UID=1000 \
   -e WORKER_GID=1000 \
-  mjstealey/docker-irods-icommands:4.1.9 {iput|iget} {file/directory|resource/collection}
+  mjstealey/docker-irods-icommands:latest {iput|iget} {file/directory|resource/collection}
 ```
 
 An empty call generates the `ihelp` message
 ```
-$ docker run --rm --env-file sample-env-file.env mjstealey/docker-irods-icommands:4.1.9
+$ docker run --rm --env-file sample-env-file.env mjstealey/docker-irods-icommands:latest
 The iCommands and a brief description of each:
 
 iadmin       - perform iRODS administrator operations (iRODS admins only).
@@ -118,5 +119,5 @@ For more information on a particular iCommand:
 or
  'ihelp <iCommand>'
 
-iRODS Version 4.1.9                Jul 2016                      ihelp
+iRODS Version 4.1.10                Nov 2016                      ihelp
 ```
