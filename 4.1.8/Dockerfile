@@ -1,6 +1,8 @@
 FROM debian:jessie
 MAINTAINER Michael J. Stealey <stealey@renci.org>
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # explicitly set user/group IDs for docker worker
 RUN groupadd -r worker --gid=999 \
     && useradd -m -g worker --uid=999 worker
@@ -40,7 +42,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 COPY . /tmp
 RUN cp /tmp/docker-entrypoint.sh /docker-entrypoint.sh \
     && rm -rf /tmp/*
-
+ENV DEBIAN_FRONTEND teletype
 VOLUME /workspace
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

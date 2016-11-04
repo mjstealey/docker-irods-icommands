@@ -23,9 +23,9 @@ RUN set -x \
     && apt-get purge -y --auto-remove ca-certificates wget
 
 # Install iCommands
-ENV IRODS_VERSION 4.1.9
+ENV IRODS_VERSION 4.1.10
 RUN apt-get update && apt-get install -y --no-install-recommends curl libfuse2 && rm -rf /var/lib/apt/lists/* \
-    && curl ftp://ftp.renci.org/pub/irods/releases/4.1.9/ubuntu14/irods-icommands-4.1.9-ubuntu14-x86_64.deb -o irods-icommands.deb \
+    && curl ftp://ftp.renci.org/pub/irods/releases/4.1.10/ubuntu14/irods-icommands-4.1.10-ubuntu14-x86_64.deb -o irods-icommands.deb \
     && dpkg -i irods-icommands.deb \
     && apt-get -f install \
     && rm irods-icommands.deb \
